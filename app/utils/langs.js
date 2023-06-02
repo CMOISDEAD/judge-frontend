@@ -34,11 +34,11 @@ int main() {
   return 0;
 }`,
   },
-  lua: {
-    name: "",
+  javascript: {
+    name: "javascript",
     version: "last",
-    base: `print("hello world")`,
+    base: `console.log("hello world")`,
   },
 };
 
-export const langList = ["java", "python"];
+export const langList = ["java", "python", "javascript"];
