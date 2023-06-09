@@ -1,10 +1,10 @@
 "use client";
 import { SiCodeberg } from "react-icons/si";
 import { ChangeLang } from "./ChangeLang";
-import Link from "next/link";
 import { useAppStore } from "@/store/store";
 import { shallow } from "zustand/shallow";
 import { UserBadge } from "./UserBadge";
+import Link from "next/link";
 
 export const Navbar = () => {
   const user = useAppStore((state) => state.user, shallow);
