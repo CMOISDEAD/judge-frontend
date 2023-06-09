@@ -4,6 +4,7 @@ import { ChangeLang } from "./ChangeLang";
 import Link from "next/link";
 import { useAppStore } from "@/store/store";
 import { shallow } from "zustand/shallow";
+import { UserBadge } from "./UserBadge";
 
 export const Navbar = () => {
   const user = useAppStore((state) => state.user, shallow);
@@ -22,9 +23,11 @@ export const Navbar = () => {
       </div>
       <div className="flex content-center items-center gap-1">
         {user.isAuth ? (
-          <p>{user.username}</p>
+          <UserBadge />
         ) : (
-          <Link href="/login">Login</Link>
+          <Link href="/login" className="hover:underline">
+            Login
+          </Link>
         )}
       </div>
     </div>

@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
+import jwt from "jsonwebtoken";
 import { Input } from "../../components/Input";
 import { useAppStore } from "@/store/store";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
 import Link from "next/link";
 
-export default function Login() {
+export default function Register() {
   const [user, setUser] = useState({});
   const router = useRouter();
 
@@ -20,7 +20,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8080/auth/login", {
+    fetch("http://localhost:8080/auth/register", {
       mode: "cors",
       method: "POST",
       headers: {
@@ -29,17 +29,8 @@ export default function Login() {
       body: JSON.stringify(user),
     })
       .then((res) => res.json())
-      .then((data) => {
-        const token = data.access_token;
-        jwt.verify(token, "secret", (err, decoded) => {
-          if (err) throw err;
-          const { sub, username, email } = decoded;
-          useAppStore.setState({
-            user: { id: sub, username, email, isAdmin: false, isAuth: true },
-            token,
-          });
-          return router.push("/");
-        });
+      .then(() => {
+        router.push("/login");
       })
       .catch((e) => console.error(e));
   };
@@ -47,13 +38,20 @@ export default function Login() {
   return (
     <div className="h-[90vh] flex justify-center content-center items-center">
       <div className="bg-neutral-900 p-5 rounded">
-        <h2 className="text-center font-bold text-2xl">Login</h2>
+        <h2 className="text-center font-bold text-2xl">Register</h2>
         <form onSubmit={handleSubmit} method="post">
           <Input
             type="text"
             id="username"
             placeholder="username"
             name="username"
+            onChange={handleChange}
+          />
+          <Input
+            type="text"
+            id="email"
+            placeholder="email"
+            name="email"
             onChange={handleChange}
           />
           <Input
@@ -67,12 +65,12 @@ export default function Login() {
             type="submit"
             className="w-full bg-blue-500 rounded px-3 py-1 hover:bg-blue-700 transition"
           >
-            Login
+            Register
           </button>
           <div className="text-xs text-neutral-500 inline-flex gap-2">
-            <p>dont have an account?</p>
+            <p>You have an account?</p>
             <Link
-              href="/register"
+              href="/login"
               className="text-neutral-400 hover:text-underline"
             >
               click here
