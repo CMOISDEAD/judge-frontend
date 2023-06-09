@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
-import { Output } from "./Output";
+import { useAppStore } from "../store/store";
 import Editor from "@monaco-editor/react";
 
-import { useAppStore } from "../store/store";
 import { langs } from "../utils/langs";
+import { Output } from "./Output";
 
 export const CodeEditor = () => {
   const prefLang = useAppStore((state) => state.prefLang, shallow);
@@ -27,7 +27,7 @@ export const CodeEditor = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setLoading(true);
-    fetch("http://localhost:8080/test", {
+    fetch("http://localhost:8080/code", {
       method: "post",
       mode: "cors",
       headers: {
@@ -55,11 +55,11 @@ export const CodeEditor = () => {
         language={lang.name}
         value={lang.base}
         onChange={handleEditorChange}
-        height={"61.7%"}
+        height={"60vh"}
       />
-      <div className="h-1/6">
+      <div className="grow">
         <Output output={output} isLoading={isLoading} passed={passed} />
-        <footer className="flex justify-end content-center items-center gap-2 p-2">
+        <footer className="flex justify-end content-center items-center gap-2">
           <button
             className="border border-blue-600 hover:bg-blue-700/5 rounded px-5 capitalize"
             onClick={handleClick}

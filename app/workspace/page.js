@@ -1,5 +1,5 @@
-import { Description } from "../components/Description";
-import { CodeEditor } from "../components/Editor";
+import { Description } from "../../components/Description";
+import { CodeEditor } from "../../components/Editor";
 
 export default function Workspace() {
   return (

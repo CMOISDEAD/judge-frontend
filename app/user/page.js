@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { Input } from "../components/Input";
-import { langList } from "../utils/langs";
-import { useAppStore } from "../store/store";
+import { Input } from "../../components/Input";
+import { langList } from "../../utils/langs";
+import { useAppStore } from "../../store/store";
 import { shallow } from "zustand/shallow";
 
 export default function User() {

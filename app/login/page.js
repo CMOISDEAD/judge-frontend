@@ -1,9 +1,34 @@
 "use client";
-import { Input } from "../components/Input";
+import { useState } from "react";
+import { Input } from "../../components/Input";
+import { useRouter } from "next/router";
+import { useAppStore } from "@/store/store";
+import axios from "axios";
 
 export default function Login() {
+  const [user, setUser] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    axios
+      .post("http://localhost:8080/auth/login", user)
+      .then((data) => {
+        if (data !== null) {
+          // TODO: check if is neccesary pass prefLang value.
+          useAppStore.setState({ user: data });
+          // return router.push("/");
+        }
+        console.log("credential invalids");
+      })
+      .catch((e) => console.error(e));
   };
 
   return (
@@ -16,18 +41,14 @@ export default function Login() {
             id="username"
             placeholder="username"
             name="username"
-          />
-          <Input
-            type="text"
-            id="email"
-            placeholder="jhon.doe@email.com"
-            name="email"
+            onChange={handleChange}
           />
           <Input
             type="password"
             id="password"
             placeholder="password"
             name="password"
+            onChange={handleChange}
           />
           <button
             type="submit"
