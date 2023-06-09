@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
+import jwt from "jsonwebtoken";
 import { Input } from "../../components/Input";
-import { useRouter } from "next/router";
 import { useAppStore } from "@/store/store";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [user, setUser] = useState({});
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,15 +19,23 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/auth/login", user)
+    fetch("http://localhost:8080/auth/login", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
       .then((data) => {
-        if (data !== null) {
-          // TODO: check if is neccesary pass prefLang value.
-          useAppStore.setState({ user: data });
-          // return router.push("/");
-        }
-        console.log("credential invalids");
+        const token = data.access_token;
+        jwt.verify(token, "secret", (err, decoded) => {
+          if (err) throw err;
+          const { sub, username, email } = decoded;
+          useAppStore.setState({ user: { id: sub, username, email } });
+          return router.push("/");
+        });
       })
       .catch((e) => console.error(e));
   };
