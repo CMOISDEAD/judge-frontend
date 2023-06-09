@@ -8,4 +8,5 @@ export const useAppStore = create((set) => ({
     isAuth: false,
   },
   prefLang: "java",
+  token: "",
 }));

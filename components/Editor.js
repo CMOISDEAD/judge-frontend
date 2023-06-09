@@ -8,7 +8,10 @@ import { langs } from "../utils/langs";
 import { Output } from "./Output";
 
 export const CodeEditor = () => {
-  const prefLang = useAppStore((state) => state.prefLang, shallow);
+  const { prefLang, token } = useAppStore(
+    (state) => ({ prefLang: state.prefLang, token: state.token }),
+    shallow
+  );
   const [lang, setLang] = useState(langs[prefLang]);
   const [value, setValue] = useState(langs[prefLang].base);
   const [passed, setPassed] = useState(true);
@@ -28,10 +31,11 @@ export const CodeEditor = () => {
     e.preventDefault();
     setLoading(true);
     fetch("http://localhost:8080/code", {
-      method: "post",
+      method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         code: value,

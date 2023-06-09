@@ -33,7 +33,10 @@ export default function Login() {
         jwt.verify(token, "secret", (err, decoded) => {
           if (err) throw err;
           const { sub, username, email } = decoded;
-          useAppStore.setState({ user: { id: sub, username, email } });
+          useAppStore.setState({
+            user: { id: sub, username, email, isAdmin: false, isAuth: true },
+            token,
+          });
           return router.push("/");
         });
       })
